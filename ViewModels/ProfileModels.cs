@@ -2,7 +2,7 @@
 
 namespace ETicaretUygulamasi.ViewModels
 {
-    public class Register
+    public class ProfileInfoModel
     {
         [Required(ErrorMessage = "İsim alanı boş geçilemez.")]
         [MaxLength(25)]
@@ -16,6 +16,13 @@ namespace ETicaretUygulamasi.ViewModels
         [MaxLength(100)]
         [EmailAddress(ErrorMessage = "Geçerli bir e-posta adresi giriniz.")]
         public string Email { get; set; }
+    }
+
+    public class ProfilePasswordChangeModel
+    {
+        [Required(ErrorMessage = "Eski Şifre alanı boş geçilemez.")]
+        [MaxLength(15)]
+        public string OldPassword { get; set; }
 
         [Required(ErrorMessage = "Şifre alanı boş geçilemez.")]
         [MaxLength(15)]
@@ -25,5 +32,9 @@ namespace ETicaretUygulamasi.ViewModels
         [MaxLength(15)]
         [Compare("Password", ErrorMessage = "Şifre ile şifre tekrar eşleşmiyor.")]
         public string PasswordAgain { get; set; }
+    }
+
+    public class ProfileImageModel
+    {
     }
 }
