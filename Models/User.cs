@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ETicaretUygulamasi.Models
 {
-    public class Register
+    [Table("Users")]
+    public class User
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -24,14 +25,5 @@ namespace ETicaretUygulamasi.Models
         [Required]
         [MaxLength(15)]
         public string Password { get; set; }
-
-        [Required]
-        [MaxLength(15)]
-        public string PasswordAgain { get; set; }
-
-        public virtual Login Logins { get; set; }
-
-
-
     }
 }

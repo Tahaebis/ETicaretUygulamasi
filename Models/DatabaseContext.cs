@@ -1,13 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace ETicaretUygulamasi.Models
 {
     public class DatabaseContext : DbContext
     {
-        public DbSet<Login> Login { get; set; }
-
-        public DbSet<Register> Register { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
