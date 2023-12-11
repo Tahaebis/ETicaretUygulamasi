@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -19,8 +20,9 @@ namespace ETicaretUygulamasi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginModel model)
+        public IActionResult Login(LoginModel model )
         {
+
             if (ModelState.IsValid)
             {
                 DatabaseContext db = new DatabaseContext();
@@ -210,6 +212,8 @@ namespace ETicaretUygulamasi.Controllers
         [HttpPost]
         public IActionResult ProfileChangePassword(ProfilePasswordChangeModel model)
         {
+          
+            
             return View();
         }
 
