@@ -1,6 +1,7 @@
 ﻿using ETicaretUygulamasi.Models;
 using ETicaretUygulamasi.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace ETicaretUygulamasi.Controllers
@@ -15,8 +16,9 @@ namespace ETicaretUygulamasi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginModel model)
+        public IActionResult Login(LoginModel model )
         {
+
             if (ModelState.IsValid)
             {
                 DatabaseContext db = new DatabaseContext();
@@ -27,6 +29,7 @@ namespace ETicaretUygulamasi.Controllers
 
                 if (epostaSifreDogruMu)
                 {
+                    DatabaseContext.LoggedUser = model.Email;
                     // login işlemi tamamlanmalı.
 
                     return RedirectToAction("Index", "Home");
@@ -150,12 +153,16 @@ namespace ETicaretUygulamasi.Controllers
         [HttpPost]
         public IActionResult ProfileChangeInfo(int id, ProfileInfoModel model)
         {
+          
+
             return View();
         }
 
         [HttpPost]
         public IActionResult ProfileChangePassword(int id, ProfilePasswordChangeModel model)
         {
+          
+            
             return View();
         }
 

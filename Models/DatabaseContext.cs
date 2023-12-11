@@ -12,5 +12,10 @@ namespace ETicaretUygulamasi.Models
 
             optionsBuilder.UseLazyLoadingProxies();
         }
+
+        public static string LoggedUser { get; set; }
+
     }
+    
+
 }
