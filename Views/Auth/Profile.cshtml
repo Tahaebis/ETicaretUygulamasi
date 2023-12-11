@@ -9,7 +9,7 @@
 
 <div class="row">
     <div class="col-5">
-        <form method="post" asp-controller="Auth" asp-action="ProfileChangeImage" asp-route-id="1">
+        <form method="post" asp-controller="Auth" asp-action="ProfileChangeImage">
             <img src="https://picsum.photos/id/64/200/200" class="img-thumbnail rounded-circle" />
 
             <div class="mt-3 col-8">
@@ -21,20 +21,20 @@
         </form>
     </div>
     <div class="col-7">
-        <form method="post" asp-controller="Auth" asp-action="ProfileChangeInfo" asp-route-id="1">
+        <form method="post" asp-controller="Auth" asp-action="ProfileChangeInfo">
             <div class="form-group mb-3  col-4 text-center">
                 <label class="form-label" for="Name">Ad</label>
-                <input name="Name" class="form-control" />
+                <input name="Name" class="form-control" value="@ViewData["Name"]" />
                 @* <span class="form-text text-muted" asp-validation-for="Name"></span> *@
             </div>
             <div class="form-group mb-3  col-4 text-center">
                 <label class="form-label" for="Surname">Soyad</label>
-                <input name="Surname" class="form-control" />
+                <input name="Surname" class="form-control" value="@ViewData["Surname"]" />
                 @* <span class="form-text text-muted" asp-validation-for="Surname"></span> *@
             </div>
             <div class="form-group mb-3  col-4 text-center">
                 <label class="form-label" for="Email">E-Posta Adresi</label>
-                <input name="Email" class="form-control" placeholder="tahaebis@outlook.com">
+                <input name="Email" class="form-control" placeholder="tahaebis@outlook.com" value="@ViewData["Email"]">
                 @* <span class="form-text text-muted" asp-validation-for="Email"></span> *@
             </div>
             <div>
@@ -42,7 +42,7 @@
             </div>
         </form>
 
-        <form method="post" asp-controller="Auth" asp-action="ProfileChangePassword" asp-route-id="1" class="mt-3">
+        <form method="post" asp-controller="Auth" asp-action="ProfileChangePassword" class="mt-3">
             <div class="form-group mb-3 col-4 text-center">
                 <label class="form-label" for="OldPassword">Şifre</label>
                 <input type="password" name="OldPassword" class="form-control" placeholder="123456789">

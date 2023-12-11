@@ -1,7 +1,11 @@
 ﻿using ETicaretUygulamasi.Models;
 using ETicaretUygulamasi.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace ETicaretUygulamasi.Controllers
 {
@@ -23,11 +27,27 @@ namespace ETicaretUygulamasi.Controllers
 
                 // Eğer e-posta ile şifre eşleşiyor ise db de.
                 // Yani varsa bu ikisi model de gönderilen değere sahip kayıt tablo da; Any metodu, true yoksa false döner.
-                bool epostaSifreDogruMu = db.Users.Any(x => x.Email == model.Email && x.Password == model.Password);
+                //bool epostaSifreDogruMu = db.Users.Any(x => x.Email == model.Email && x.Password == model.Password);
 
-                if (epostaSifreDogruMu)
+                User user = db.Users.Where(x => x.Email == model.Email && x.Password == model.Password).FirstOrDefault();
+
+                if (user != null)
                 {
-                    // login işlemi tamamlanmalı.
+                    // Cookie de tutulacak veriler için liste tanımlanır.
+                    List<Claim> claims = new List<Claim>();
+                    claims.Add(new Claim(ClaimTypes.Email, user.Email));
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+                    claims.Add(new Claim(ClaimTypes.Name, user.Name + " " + user.Surname));
+
+                    ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    AuthenticationProperties authenticationProperties = new AuthenticationProperties();
+                    authenticationProperties.ExpiresUtc = DateTime.Now.AddMinutes(20);
+                    authenticationProperties.IssuedUtc = DateTime.Now.AddMinutes(20);
+
+                    ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
+
+                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authenticationProperties);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -38,6 +58,12 @@ namespace ETicaretUygulamasi.Controllers
             }
 
             return View(model);
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
 
         public IActionResult Register()
@@ -142,25 +168,54 @@ namespace ETicaretUygulamasi.Controllers
             return View(model);
         }
 
+        [Authorize]
         public IActionResult Profile()
         {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            DatabaseContext db = new DatabaseContext();
+            User user = db.Users.Find(userId);
+
+            ViewData["Name"] = user.Name;
+            ViewData["Surname"] = user.Surname;
+            ViewData["Email"] = user.Email;
+
             return View();
         }
 
+        [Authorize]
         [HttpPost]
-        public IActionResult ProfileChangeInfo(int id, ProfileInfoModel model)
+        public IActionResult ProfileChangeInfo(ProfileInfoModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                DatabaseContext db = new DatabaseContext();
+                User user = db.Users.Find(userId);
+                //User user = db.Users.Where(x => x.Id == userId).FirstOrDefault();
+                //User user = db.Users.FirstOrDefault(x => x.Id == userId);
+
+                user.Name = model.Name;
+                user.Surname = model.Surname;
+                user.Email = model.Email; // TODO : burası dertli..!!
+
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Profile");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult ProfileChangePassword(ProfilePasswordChangeModel model)
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
-        public IActionResult ProfileChangePassword(int id, ProfilePasswordChangeModel model)
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult ProfileChangeImage(int id, IFormFile profileImage)
+        public IActionResult ProfileChangeImage(IFormFile profileImage)
         {
             return View();
         }
