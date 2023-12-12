@@ -23,7 +23,7 @@ namespace ETicaretUygulamasi.Models
         public string Email { get; set; }
 
         [Required]
-        [MaxLength(15)]
+        [MaxLength(100)]
         public string Password { get; set; }
 
         public Guid? Unique { get; set; }

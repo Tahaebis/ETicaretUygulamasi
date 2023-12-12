@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NETCore.Encrypt.Extensions;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -20,7 +21,7 @@ namespace ETicaretUygulamasi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginModel model )
+        public IActionResult Login(LoginModel model)
         {
 
             if (ModelState.IsValid)
@@ -31,7 +32,8 @@ namespace ETicaretUygulamasi.Controllers
                 // Yani varsa bu ikisi model de gönderilen değere sahip kayıt tablo da; Any metodu, true yoksa false döner.
                 //bool epostaSifreDogruMu = db.Users.Any(x => x.Email == model.Email && x.Password == model.Password);
 
-                User user = db.Users.Where(x => x.Email == model.Email && x.Password == model.Password).FirstOrDefault();
+                string passwordHashed = model.Password.MD5();
+                User user = db.Users.Where(x => x.Email == model.Email && x.Password == passwordHashed).FirstOrDefault();
 
                 if (user != null)
                 {
@@ -80,11 +82,17 @@ namespace ETicaretUygulamasi.Controllers
             {
                 DatabaseContext db = new DatabaseContext();
 
+                if (db.Users.Any(x => x.Email.ToLower() == model.Email.ToLower()))
+                {
+                    ModelState.AddModelError(nameof(model.Email), "E-posta adresi zaten mevcuttur.");
+                    return View(model);
+                }
+
                 User user = new User();
                 user.Name = model.Name;
                 user.Surname = model.Surname;
                 user.Email = model.Email;
-                user.Password = model.Password;
+                user.Password = model.Password.MD5();
 
                 db.Users.Add(user);
                 db.SaveChanges();
@@ -153,7 +161,7 @@ namespace ETicaretUygulamasi.Controllers
 
                 if (user != null)
                 {
-                    user.Password = model.Password;
+                    user.Password = model.Password.MD5();
                     user.Unique = null;
                     db.SaveChanges();
 
@@ -194,6 +202,13 @@ namespace ETicaretUygulamasi.Controllers
                 int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 DatabaseContext db = new DatabaseContext();
+
+                if (db.Users.Any(x => x.Email.ToLower() == model.Email.ToLower() && x.Id != userId))
+                {
+                    ModelState.AddModelError(nameof(model.Email), "Bu e-posta adresi kullanılıyor.");
+                    return View("Profile", model);
+                }
+
                 User user = db.Users.Find(userId);
                 //User user = db.Users.Where(x => x.Id == userId).FirstOrDefault();
                 //User user = db.Users.FirstOrDefault(x => x.Id == userId);
@@ -203,25 +218,59 @@ namespace ETicaretUygulamasi.Controllers
                 user.Email = model.Email; // TODO : burası dertli..!!
 
                 db.SaveChanges();
+                return RedirectToAction("Profile");
             }
 
-            return RedirectToAction("Profile");
+            return View("Profile", model);
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult ProfileChangePassword(ProfilePasswordChangeModel model)
         {
-          
-            
-            return View();
+            if (ModelState.IsValid)
+            {
+                int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                DatabaseContext db = new DatabaseContext();
+
+                string oldPasswordHashed = model.OldPassword.MD5();
+                if (db.Users.Any(x => x.Id == userId && x.Password == oldPasswordHashed) == false)
+                {
+                    ModelState.AddModelError(nameof(model.OldPassword), "Şifre değiştirme işleminde eski şifrenizi yanlış yazdınız.");
+                    return View("Profile", model);
+                }
+
+                User user = db.Users.Find(userId);
+                user.Password = model.Password.MD5();
+
+                db.SaveChanges();
+                return RedirectToAction("Profile");
+            }
+
+            return View("Profile", model);
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult ProfileChangeImage(IFormFile profileImage)
         {
-            return View();
+            if (profileImage.Length > 0)
+            {
+                int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                string fileName = "user" + userId + ".jpg"; // user1.jpg
+                string path = Path.Combine(@"wwwroot\img\profile_images", fileName);
+
+                // C:\Users\muratbaseren\source\repos\taha\ETicaretUygulamasi\wwwroot\img\profile_images\user1.jpg
+                FileStream stream = new FileStream(path, FileMode.OpenOrCreate);
+                profileImage.CopyTo(stream);
+                
+                stream.Close();
+                stream.Dispose();
+            }
+
+            Thread.Sleep(2000);
+
+            return RedirectToAction("Profile");
         }
     }
 

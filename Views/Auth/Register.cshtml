@@ -5,30 +5,32 @@
 
 
 <form method="post" asp-controller="Auth" asp-action="Register">
+    <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+
     <div class="form-group mb-3  col-3 text-center">
         <label class="form-label" asp-for="Name">Ad</label>
         <input asp-for="Name"  class="form-control" />
-        <span class="form-text text-muted" asp-validation-for="Name"></span>
+        <span class="form-text text-danger small" asp-validation-for="Name"></span>
     </div>
     <div class="form-group mb-3  col-3 text-center">
         <label class="form-label" asp-for="Surname">Soyad</label>
         <input asp-for="Surname"  class="form-control" />
-        <span  class="form-text text-muted" asp-validation-for="Surname"></span>
+        <span class="form-text text-danger small" asp-validation-for="Surname"></span>
     </div>
     <div class="form-group mb-3  col-3 text-center">
         <label class="form-label" asp-for="Email">E-Posta Adresi</label>
         <input asp-for="Email"  class="form-control" aria-describedby="emailHelp" placeholder="tahaebis@outlook.com">
-        <span class="form-text text-muted" asp-validation-for="Email"></span>
+        <span class="form-text text-danger small" asp-validation-for="Email"></span>
     </div>
     <div class="form-group mb-3 col-3 text-center">
         <label class="form-label" asp-for="Password">Şifre</label>
         <input type="password" asp-for="Password" class="form-control" placeholder="123456789">
-        <span class="form-text text-muted" asp-validation-for="Password"></span>
+        <span class="form-text text-danger small" asp-validation-for="Password"></span>
     </div>
     <div class="form-group mb-3 col-3 text-center">
         <label class="form-label" asp-for="PasswordAgain">Şifre Tekrar</label>
         <input type="password" asp-for="PasswordAgain" class="form-control" placeholder="123456789">
-        <span class="form-text text-muted" asp-validation-for="PasswordAgain"></span>
+        <span class="form-text text-danger small" asp-validation-for="PasswordAgain"></span>
     </div>
     <div>
         <button type="submit" class="btn btn-success col-3">Kayıt Ol!</button>
