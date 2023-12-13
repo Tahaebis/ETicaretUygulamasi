@@ -1,1 +1,77 @@
-﻿
+﻿@using ETicaretUygulamasi.Models
+@model List<Category>
+
+<div class="row">
+    <div class="col">
+        <h1>Kategori Yönetimi</h1>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="mb-3">
+            <a class="btn btn-primary btn-sm" asp-action="Create">Yeni Kategori</a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Adı</th>
+                    <th>Açıklama</th>
+                    <th>Gizli</th>
+                    <th>Kilitli</th>
+                    <th>Oluş. Tar.</th>
+                    <th>Oluşturan</th>
+                    <th>Güncel. Tar.</th>
+                    <th>Güncelleyen</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Category cat in Model)
+                {
+                    <tr>
+                        <td>@cat.Name</td>
+                        <td>@cat.Description</td>
+                        <td>
+                            @if (cat.Hidden)
+                            {
+                                <span class="text-danger">
+                                    <i class="fa-regular fa-circle-xmark text-danger me-2"></i>Gizli
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-success">
+                                    <i class="fa-regular fa-circle-check text-success me-2"></i>Görünür
+                                </span>
+                            }
+                        </td>
+                        <td>
+                            @if (cat.Locked)
+                            {
+                                <span class="text-danger">
+                                    <i class="fa-regular fa-circle-xmark text-danger me-2"></i>Kilitli
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-success">
+                                    <i class="fa-regular fa-circle-check text-success me-2"></i>Aktif
+                                </span>
+                            }
+                        </td>
+                        <td class="small">@cat.CreatedAt</td>
+                        <td class="small">@cat.CreatedUserName</td>
+                        <td class="small">@cat.ModifiedAt</td>
+                        <td class="small">@cat.ModifiedUserName</td>
+                        <td>
+                            <a class="btn btn-info btn-sm">Düzenle</a>
+                            <a class="btn btn-danger btn-sm">Sil</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

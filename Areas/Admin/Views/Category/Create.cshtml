@@ -1,0 +1,44 @@
+﻿@using ETicaretUygulamasi.Areas.Admin.Models.CategoryModels
+@model CategoryCreate
+
+<div class="row">
+    <div class="col">
+        <h1>Yeni Kategori</h1>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name">Adı</label>
+                <input asp-for="Name" class="form-control" placeholder="Giyim" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description">Açıklama</label>
+                <textarea rows="2" asp-for="Description" class="form-control" placeholder="Lorem ipsum dolor sit a met."></textarea>
+                <span asp-validation-for="Description" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <input asp-for="Hidden" />
+                <label asp-for="Hidden">Gizli</label>
+            </div>
+
+            <div class="mb-3">
+                <input asp-for="Locked" />
+                <label asp-for="Locked">Kilitli</label>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary btn-sm">Oluştur</button>
+            </div>
+
+        </form>
+    </div>
+</div>
