@@ -1,4 +1,6 @@
+using ETicaretUygulamasi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 namespace ETicaretUygulamasi
 {
@@ -10,6 +12,14 @@ namespace ETicaretUygulamasi
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // DatabaseContext nesnemizin merkezi tanýmlanmasý.
+            builder.Services.AddDbContext<DatabaseContext>(opts =>
+            {
+                string connStr = builder.Configuration.GetConnectionString("DefaultConnection");
+                opts.UseSqlServer(connStr);
+                opts.UseLazyLoadingProxies();
+            });
 
             // Authentication - kimlik kontrolü hizmetini aktif ettik.
             builder.Services

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NETCore.Encrypt.Extensions;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -14,9 +13,16 @@ namespace ETicaretUygulamasi.Controllers
 
     public class AuthController : Controller
     {
+        DatabaseContext db;
+
+        // Dependency Injection - Bağımlılık aşılama
+        public AuthController(DatabaseContext _db)
+        {
+            db = _db;
+        }
+
         public IActionResult Login()
         {
-
             return View();
         }
 
@@ -26,8 +32,6 @@ namespace ETicaretUygulamasi.Controllers
 
             if (ModelState.IsValid)
             {
-                DatabaseContext db = new DatabaseContext();
-
                 // Eğer e-posta ile şifre eşleşiyor ise db de.
                 // Yani varsa bu ikisi model de gönderilen değere sahip kayıt tablo da; Any metodu, true yoksa false döner.
                 //bool epostaSifreDogruMu = db.Users.Any(x => x.Email == model.Email && x.Password == model.Password);
@@ -80,8 +84,6 @@ namespace ETicaretUygulamasi.Controllers
         {
             if (ModelState.IsValid)
             {
-                DatabaseContext db = new DatabaseContext();
-
                 if (db.Users.Any(x => x.Email.ToLower() == model.Email.ToLower()))
                 {
                     ModelState.AddModelError(nameof(model.Email), "E-posta adresi zaten mevcuttur.");
@@ -115,7 +117,6 @@ namespace ETicaretUygulamasi.Controllers
             // Kişinin e-posta adresi varsa; e-posta ile şifre sıfırlama link i gönderilir.
             if (ModelState.IsValid)
             {
-                DatabaseContext db = new DatabaseContext();
                 User user = db.Users.Where(x => x.Email == model.Email).FirstOrDefault();
 
                 if (user != null)
@@ -156,7 +157,6 @@ namespace ETicaretUygulamasi.Controllers
             // Kullanıcıyı(user) tespit et ve şifresini güncelle.
             if (ModelState.IsValid)
             {
-                DatabaseContext db = new DatabaseContext();
                 User user = db.Users.Where(x => x.Unique == unique).FirstOrDefault();
 
                 if (user != null)
@@ -183,7 +183,6 @@ namespace ETicaretUygulamasi.Controllers
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            DatabaseContext db = new DatabaseContext();
             User user = db.Users.Find(userId);
 
             ViewData["Name"] = user.Name;
@@ -200,8 +199,6 @@ namespace ETicaretUygulamasi.Controllers
             if (ModelState.IsValid)
             {
                 int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-                DatabaseContext db = new DatabaseContext();
 
                 if (db.Users.Any(x => x.Email.ToLower() == model.Email.ToLower() && x.Id != userId))
                 {
@@ -231,7 +228,6 @@ namespace ETicaretUygulamasi.Controllers
             if (ModelState.IsValid)
             {
                 int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                DatabaseContext db = new DatabaseContext();
 
                 string oldPasswordHashed = model.OldPassword.MD5();
                 if (db.Users.Any(x => x.Id == userId && x.Password == oldPasswordHashed) == false)
