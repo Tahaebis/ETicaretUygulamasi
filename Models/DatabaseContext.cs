@@ -5,6 +5,7 @@ namespace ETicaretUygulamasi.Models
     public class DatabaseContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -12,10 +13,5 @@ namespace ETicaretUygulamasi.Models
 
             optionsBuilder.UseLazyLoadingProxies();
         }
-
-        public static string LoggedUser { get; set; }
-
     }
-    
-
 }
