@@ -66,8 +66,8 @@
                         <td class="small">@cat.ModifiedAt</td>
                         <td class="small">@cat.ModifiedUserName</td>
                         <td>
-                            <a class="btn btn-info btn-sm">Düzenle</a>
-                            <a class="btn btn-danger btn-sm">Sil</a>
+                            <a asp-action="Edit" asp-route-id="@cat.Id" class="btn btn-info btn-sm">Düzenle</a>
+                            <a asp-action="Delete" asp-route-id="@cat.Id" onclick="return confirm('Bu kategori silinsin mi?');" class="btn btn-danger btn-sm">Sil</a>
                         </td>
                     </tr>
                 }
