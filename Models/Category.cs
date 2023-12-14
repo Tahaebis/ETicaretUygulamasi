@@ -4,19 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ETicaretUygulamasi.Models
 {
     [Table("Categories")]
-    public class Category
+    public class Category : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? ModifiedAt { get; set; }
-
-        [StringLength(50)]
-        public string CreatedUserName { get; set; }
-
-        [StringLength(50)]
-        public string? ModifiedUserName { get; set; }
-
         [StringLength(100)]
         public string Name { get; set; }
 
