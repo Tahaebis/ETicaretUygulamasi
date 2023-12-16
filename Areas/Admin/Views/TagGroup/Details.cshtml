@@ -9,57 +9,46 @@
 <div>
     <h4>TagGroup</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Oluşturma Tar.
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.CreatedAt
-        </dd>
-        <dt class = "col-sm-2">
-            Güncellenme Tar.
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.ModifiedAt
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedUserName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedUserName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedUserName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModifiedUserName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hidden)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hidden)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Locked)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Locked)
-        </dd>
-    </dl>
+    <div class="row table">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td class="col-sm-2">Oluşturma Tar.</td>
+                    <td class="col-sm-10">@Model.CreatedAt</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Güncellenme Tar.</td>
+                    <td class="col-sm-10">@Model.ModifiedAt</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Kayıt Yapan Kullanıcı</td>
+                    <td class="col-sm-10">@Model.CreatedUserName</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Değiştirilen Kullanıcı Adı</td>
+                    <td class="col-sm-10">@Model.ModifiedUserName</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Adı</td>
+                    <td class="col-sm-10">@Model.Name</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Açıklama</td>
+                    <td class="col-sm-10">@Model.Description</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Hidden</td>
+                    <td class="col-sm-10">@Model.Hidden</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Locked</td>
+                    <td class="col-sm-10">@Model.Locked</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning btn-sm">Edit</a>
     <a asp-action="Index" class="btn btn-secondary btn-sm">Geri Dön!</a>

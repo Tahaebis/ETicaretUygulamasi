@@ -10,7 +10,7 @@
 <div>
     <h4>Ürün Grubu</h4>
     <hr />
-    <dl class="row">
+    <dl class="row table">
         <dt class="col-sm-2">
             Oluşturma Tar.
         </dt>
@@ -24,40 +24,40 @@
             @Model.ModifiedAt
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedUserName)
+            Kayıt Yapan Kullanıcı
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedUserName)
+            @Model.CreatedUserName
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedUserName)
+            Değiştirilen Kullanıcı Adı
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModifiedUserName)
+            @Model.ModifiedUserName
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            Adı
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Model.Name
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            Açıklama
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Model.Description
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hidden)
+            Hidden
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hidden)
+            @Model.Hidden
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Locked)
+            Locked
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Locked)
+            @Model.Locked
         </dd>
     </dl>
     

@@ -16,37 +16,37 @@
                 Adı
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Açıklama
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Price
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DiscountedPrice)
+                DiscountedPrice
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TaxRate)
+                TaxRate
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Stock)
+                Stock
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                Category
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TagGroup)
+                TagGroup
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
+                CreatedAt
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ModifiedAt)
+                ModifiedAt
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedUserName)
+                CreatedUserName
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ModifiedUserName)
+                ModifiedUserName
             </th>
             <th></th>
         </tr>
@@ -59,37 +59,34 @@
                     @item.Name
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @item.Description
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Price)
+                    @item.Price
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DiscountedPrice)
+                    @item.DiscountedPrice
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TaxRate)
+                    @item.TaxRate
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Stock)
+                    @item.Category.Id
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Category.Id)
+                    @item.TagGroup.Id
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TagGroup.Id)
+                    @item.CreatedAt
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                    @item.ModifiedAt
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ModifiedAt)
+                    @item.CreatedUserName
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CreatedUserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ModifiedUserName)
+                    @item.ModifiedUserName
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

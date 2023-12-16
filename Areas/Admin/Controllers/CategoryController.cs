@@ -16,6 +16,7 @@ namespace ETicaretUygulamasi.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
+           
             List<Category> categories = db.Categories.ToList();
 
             return View(categories);
@@ -51,6 +52,7 @@ namespace ETicaretUygulamasi.Areas.Admin.Controllers
         public IActionResult Edit(int id)
         {
             Category category = db.Categories.Find(id);
+
 
             CategoryEdit model = new CategoryEdit();
             model.Name = category.Name;
