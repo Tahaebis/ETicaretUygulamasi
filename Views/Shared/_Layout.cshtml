@@ -39,14 +39,23 @@
                                     <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Ürünler</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Profile">
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-dark dropdown-toggle" role="button" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span>@User.Identity.Name</span>
                                     @* <span class="small">(@User.FindFirst(ClaimTypes.Email).Value)</span> *@
                                 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Çıkış</a>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Auth"
+                                           asp-action="Profile">Profil</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Auth"
+                                           asp-action="Logout">Çıkış</a>
+                                    </li>
+                                </ul>
                             </li>
                         }
                         else
@@ -58,6 +67,15 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Register">Kayıt Ol</a>
                             </li>
                         }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark position-relative me-2" asp-area="" asp-controller="Cart" asp-action="Index">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                                <span class="position-absolute top-10 start-100 translate-middle badge rounded-pill bg-danger">
+                                    3
+                                    <span class="visually-hidden">Sepetteki ürünler</span>
+                                </span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
