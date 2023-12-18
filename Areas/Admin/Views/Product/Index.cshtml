@@ -36,18 +36,18 @@
             <th>
                 Ürün Grubu
             </th>
-            <th>
+            @* <th>
                 Oluşturma Tarihi    
+            </th>
+            <th>
+                Oluşturan
             </th>
             <th>
                 Düzenlenme Tarihi   
             </th>
             <th>
-                Kayıt Eden Kullancı
-            </th>
-            <th>
-                Düzenleyen Kullanıcı
-            </th>
+                Düzenleyen
+            </th> *@
             <th></th>
         </tr>
     </thead>
@@ -71,27 +71,35 @@
                     @item.TaxRate
                 </td>
                 <td>
-                    @item.Category.Id
+                    @item.Stock
                 </td>
                 <td>
-                    @item.TagGroup.Id
+                    @item.Category.Name
                 </td>
                 <td>
+                    @* @if (item.TagGroup != null)
+                    {
+                        @item.TagGroup.Name
+                    } *@
+
+                    @item.TagGroup?.Name
+                </td>
+                @* <td>
                     @item.CreatedAt
-                </td>
-                <td>
-                    @item.ModifiedAt
                 </td>
                 <td>
                     @item.CreatedUserName
                 </td>
                 <td>
-                    @item.ModifiedUserName
+                    @item.ModifiedAt
                 </td>
+                <td>
+                    @item.ModifiedUserName
+                </td> *@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Kaydı silmek istediğinize emin misiniz?')">Delete</a>
                 </td>
             </tr>
         }

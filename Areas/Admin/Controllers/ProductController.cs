@@ -1,6 +1,8 @@
 ﻿using ETicaretUygulamasi.Areas.Admin.Models.ProductModels;
 using ETicaretUygulamasi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json.Linq;
 
 namespace ETicaretUygulamasi.Areas.Admin.Controllers
 {
@@ -29,7 +31,53 @@ namespace ETicaretUygulamasi.Areas.Admin.Controllers
         // GET: ProductController/Create
         public ActionResult Create()
         {
+            //List<Category> categories = db.Categories.ToList();
+            //List<SelectListItem> categoriesSelect = new List<SelectListItem>();
+
+            //foreach (Category cat in categories)
+            //{
+            //    //SelectListItem item = new SelectListItem();
+            //    //item.Text = cat.Name;
+            //    //item.Value = cat.Id.ToString();
+
+            //    SelectListItem item = new SelectListItem
+            //    {
+            //        Text = cat.Name,
+            //        Value = cat.Id.ToString()
+            //    };
+
+            //    categoriesSelect.Add(item);
+            //}
+
+            // LINQ
+            LoadCategoryAndTagGroupSelect();
+
             return View();
+        }
+
+        private void LoadCategoryAndTagGroupSelect()
+        {
+            List<SelectListItem> categoriesSelect =
+                            db.Categories.Select(cat =>
+                                new SelectListItem()
+                                {
+                                    Text = cat.Name,
+                                    Value = cat.Id.ToString()
+                                })
+                            .ToList();
+
+            List<SelectListItem> tagGroupsSelect =
+                db.TagGroups.Select(tg =>
+                    new SelectListItem()
+                    {
+                        Text = tg.Name,
+                        Value = tg.Id.ToString()
+                    })
+                .ToList();
+
+
+            ViewData["categories"] = categoriesSelect;
+            ViewData["tagGroups"] = tagGroupsSelect;
         }
 
         // POST: ProductController/Create
@@ -37,56 +85,94 @@ namespace ETicaretUygulamasi.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ProductCreate model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                Product product = new Product
+                {
+                    CategoryId = model.CategoryId,
+                    Description = model.Description,
+                    DiscountedPrice = model.DiscountedPrice,
+                    Name = model.Name,
+                    Price = model.Price,
+                    Stock = model.Stock,
+                    TagGroupId = model.TagGroupId,
+                    TaxRate = model.TaxRate,
+                    CreatedAt = DateTime.Now,
+                    CreatedUserName = User.Identity.Name
+                };
+
+                db.Products.Add(product);
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+
+
+            LoadCategoryAndTagGroupSelect();
+
+            return View(model);
         }
 
         // GET: ProductController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Product product = db.Products.Find(id);
+            ProductEdit model = new ProductEdit
+            {
+                CategoryId = product.CategoryId,
+                Description = product.Description,
+                DiscountedPrice = product.DiscountedPrice,
+                Name = product.Name,
+                Price = product.Price,
+                Stock = product.Stock,
+                TagGroupId = product.TagGroupId,
+                TaxRate = product.TaxRate
+            };
+
+            LoadCategoryAndTagGroupSelect();
+
+            return View(model);
         }
 
         // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, ProductEdit model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                Product product = db.Products.Find(id);
+
+                product.CategoryId = model.CategoryId;
+                product.Description = model.Description;
+                product.DiscountedPrice = model.DiscountedPrice;
+                product.Name = model.Name;
+                product.Price = model.Price;
+                product.Stock = model.Stock;
+                product.TagGroupId = model.TagGroupId;
+                product.TaxRate = model.TaxRate;
+                product.ModifiedAt = DateTime.Now;
+                product.ModifiedUserName = User.Identity.Name;
+                
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+
+
+            LoadCategoryAndTagGroupSelect();
+
+            return View(model);
         }
 
         // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
-        }
+            Product product = db.Products.Find(id);
+            db.Products.Remove(product);
+            db.SaveChanges();
 
-        // POST: ProductController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
     }
 }

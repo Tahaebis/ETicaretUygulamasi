@@ -1,18 +1,14 @@
 ﻿@using ETicaretUygulamasi.Areas.Admin.Models.ProductModels
 @using ETicaretUygulamasi.Models
-@model ProductCreate
+@model ProductEdit
 
-@{
-    ViewData["Title"] = "Create";
-}
-
-<h1>Create</h1>
+<h1>Edit</h1>
 
 <h4>Product</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group mt-3">
                 <label asp-for="Name" class="control-label"></label>
@@ -65,7 +61,7 @@
                 </select>
             </div>
             <div class="form-group mt-3">
-                <input type="submit" value="Create" class="btn btn-primary btn-sm" />
+                <input type="submit" value="Save" class="btn btn-primary btn-sm" />
                 <a asp-action="Index" class="btn btn-secondary btn-sm">Geri Dön!</a>
             </div>
         </form>
