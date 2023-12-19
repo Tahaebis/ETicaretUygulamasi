@@ -4,6 +4,7 @@ using ETicaretUygulamasi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ETicaretUygulamasi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231219105848_AddressAdded")]
+    partial class AddressAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,12 +86,7 @@ namespace ETicaretUygulamasi.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Addresses");
                 });
@@ -274,17 +272,6 @@ namespace ETicaretUygulamasi.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ETicaretUygulamasi.Models.Address", b =>
-                {
-                    b.HasOne("ETicaretUygulamasi.Models.User", "User")
-                        .WithMany("Addresses")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ETicaretUygulamasi.Models.Product", b =>
                 {
                     b.HasOne("ETicaretUygulamasi.Models.Category", "Category")
@@ -300,11 +287,6 @@ namespace ETicaretUygulamasi.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("TagGroup");
-                });
-
-            modelBuilder.Entity("ETicaretUygulamasi.Models.User", b =>
-                {
-                    b.Navigation("Addresses");
                 });
 #pragma warning restore 612, 618
         }

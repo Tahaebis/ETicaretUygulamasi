@@ -27,5 +27,7 @@ namespace ETicaretUygulamasi.Models
         public string Password { get; set; }
 
         public Guid? Unique { get; set; }
+
+        public virtual List<Address> Addresses { get; set; }
     }
 }

@@ -1,0 +1,60 @@
+﻿@model ETicaretUygulamasi.Models.Address
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Address</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Town" class="control-label"></label>
+                <input asp-for="Town" class="form-control" />
+                <span asp-validation-for="Town" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryName" class="control-label"></label>
+                <input asp-for="DeliveryName" class="form-control" />
+                <span asp-validation-for="DeliveryName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliverySurname" class="control-label"></label>
+                <input asp-for="DeliverySurname" class="form-control" />
+                <span asp-validation-for="DeliverySurname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryPhone" class="control-label"></label>
+                <input asp-for="DeliveryPhone" class="form-control" />
+                <span asp-validation-for="DeliveryPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
