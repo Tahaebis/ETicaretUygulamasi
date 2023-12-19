@@ -1,4 +1,5 @@
 ﻿using ETicaretUygulamasi.Models;
+using ETicaretUygulamasi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -9,16 +10,30 @@ namespace ETicaretUygulamasi.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        DatabaseContext db;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, DatabaseContext _db)
         {
             _logger = logger;
+            db = _db;
         }
 
         [AllowAnonymous]
-        public IActionResult Index()
+        public IActionResult Index(int? id)
         {
-            return View();
+            HomeIndexViewModel model = new HomeIndexViewModel();
+            model.Categories = db.Categories.OrderBy(x => x.Name).ToList();
+
+            if (id == null)
+            {
+                model.Products = db.Products.ToList();
+            }
+            else
+            {
+                model.Products = db.Products.Where(x => x.CategoryId == id).ToList();
+            }
+
+            return View(model);
         }
 
         public IActionResult Privacy()

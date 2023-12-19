@@ -1,6 +1,5 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@using MFramework.Services.FakeData
+@model HomeIndexViewModel
 
 <div class="row mb-4">
     <div class="col">
@@ -31,27 +30,39 @@
 <div class="row mb-4">
     <div class="col-3">
         <div class="list-group">
-            <a href="#" class="list-group-item list-group-item-action">A second link item</a>
-            <a href="#" class="list-group-item list-group-item-action">A third link item</a>
-            <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
+            @foreach (Category cat in Model.Categories)
+            {
+                <a asp-action="Index" asp-controller="Home" asp-route-id="@cat.Id"
+                   class="list-group-item list-group-item-action">@cat.Name</a>
+            }
         </div>
     </div>
     <div class="col-9">
         <div class="row">
-            @for (int i = 0; i < 15; i++)
+            @foreach (Product pro in Model.Products)
             {
                 <div class=" col-3 mb-3">
                     <div class="card">
                         <img src="https://picsum.photos/286/180?random=1" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
+                            <h5 class="card-title"><a href="#">@pro.Name</a></h5>
                             <div class="row">
                                 <div class="col-10">
-                                    <i class="text-warning fa-solid fa-star"></i>
-                                    <i class="text-warning fa-regular fa-star"></i>
-                                    <i class="text-warning fa-regular fa-star"></i>
-                                    <i class="text-warning fa-regular fa-star"></i>
-                                    <i class="text-warning fa-regular fa-star"></i>
+                                    @{
+                                        // int point = NumberData.GetNumber(0, 5);
+                                        int point = Random.Shared.Next(0, 5);
+                                        int remaining = 5 - point;
+                                    }
+
+                                    @for (int i = 0; i < point; i++)
+                                    {
+                                        <i class="text-warning fa-solid fa-star"></i>
+                                    }
+
+                                    @for (int i = 0; i < remaining; i++)
+                                    {
+                                        <i class="text-warning fa-regular fa-star"></i>
+                                    }
                                 </div>
                                 <div class="col-2">
                                     <a href="#"><i class="fa-regular fa-heart"></i></a>
@@ -59,15 +70,15 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <span class="text-danger line-through small">12.000 TL</span>
+                                    <span class="text-danger line-through small">@pro.Price.ToString("C2")</span>
                                 </div>
                                 <div class="col-12">
-                                    <span class="bold">10.000 TL</span>
+                                    <span class="bold">@pro.DiscountedPrice.ToString("C2")</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <p class="card-text small">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <p class="card-text small">@pro.Description?.Substring(0, 40) ...</p>
                                 </div>
                             </div>
                             <div class="row mt-3">

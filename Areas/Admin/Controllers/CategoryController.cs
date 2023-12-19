@@ -1,5 +1,6 @@
 ﻿using ETicaretUygulamasi.Areas.Admin.Models.CategoryModels;
 using ETicaretUygulamasi.Models;
+using MFramework.Services.FakeData;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ETicaretUygulamasi.Areas.Admin.Controllers
@@ -25,6 +26,37 @@ namespace ETicaretUygulamasi.Areas.Admin.Controllers
         public IActionResult Create()
         {
             return View();
+        }
+
+        public IActionResult CreateRandom()
+        {
+            List<string> catNames = new List<string>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                string catName = NameData.GetECommerceCategoryName();
+
+                while (catNames.Contains(catName))
+                {
+                    catName = NameData.GetECommerceCategoryName();
+                }
+
+                catNames.Add(catName);
+
+                Category category = new Category();
+                category.Name = catName;
+                category.Description = TextData.GetSentence();
+                category.Hidden = false;
+                category.Locked = false;
+                category.CreatedAt = DateTime.Now;
+                category.CreatedUserName = "random";
+
+                db.Categories.Add(category);
+            }
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

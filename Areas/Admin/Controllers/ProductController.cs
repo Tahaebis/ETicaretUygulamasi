@@ -1,5 +1,6 @@
 ﻿using ETicaretUygulamasi.Areas.Admin.Models.ProductModels;
 using ETicaretUygulamasi.Models;
+using MFramework.Services.FakeData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Linq;
@@ -26,6 +27,38 @@ namespace ETicaretUygulamasi.Areas.Admin.Controllers
         public ActionResult Details(int id)
         {
             return View();
+        }
+
+        public ActionResult CreateRandom()
+        {
+            List<int> categoryIds = db.Categories.Select(x => x.Id).ToList();
+            List<int> tagGroupIds = db.TagGroups.Select(x => x.Id).ToList();
+
+            for (int i = 0; i < 40; i++)
+            {
+                decimal price = NumberData.GetNumber(100, 99999);
+                decimal discountedPrice = price - (price * Random.Shared.Next(3, 40) / 100);
+
+                Product product = new Product
+                {
+                    Description = TextData.GetSentences(Random.Shared.Next(1, 5)),
+                    Price = price,
+                    DiscountedPrice = discountedPrice,
+                    Name = NameData.GetECommerceProductName(),
+                    Stock = Random.Shared.Next(5, 50),
+                    TaxRate = CollectionData.GetElement(new decimal[] { 1, 10, 18, 20 }),
+                    CategoryId = CollectionData.GetElement(categoryIds),
+                    TagGroupId = CollectionData.GetElement(tagGroupIds),
+                    CreatedAt = DateTime.Now,
+                    CreatedUserName = "random"
+                };
+
+                db.Products.Add(product);
+            }
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         // GET: ProductController/Create
@@ -153,7 +186,7 @@ namespace ETicaretUygulamasi.Areas.Admin.Controllers
                 product.TaxRate = model.TaxRate;
                 product.ModifiedAt = DateTime.Now;
                 product.ModifiedUserName = User.Identity.Name;
-                
+
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
