@@ -1,0 +1,12 @@
+﻿@model List<CartItem>
+
+<div class="row">
+    <div class="col">
+        <ul>
+            @foreach (CartItem item in Model)
+            {
+                <li>Product Id : @item.ProductId - Quantity : @item.Quantity</li>
+            }
+        </ul>
+    </div>
+</div>

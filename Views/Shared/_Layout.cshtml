@@ -1,4 +1,5 @@
 ﻿@using System.Security.Claims
+@using System.Text.Json
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,11 +72,27 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Register">Kayıt Ol</a>
                             </li>
                         }
+
+                        @{
+                            List<CartItem> items = null;
+                            string? json = ViewContext.HttpContext.Session.GetString("sepet");
+
+                            if (!string.IsNullOrEmpty(json))
+                                items = JsonSerializer.Deserialize<List<CartItem>>(json);
+                            else
+                                items = new List<CartItem>();
+
+                            int totalProductCount = 0;
+
+                            if (items.Count > 0)
+                                totalProductCount = items.Sum(x => x.Quantity);
+                        }
+
                         <li class="nav-item">
                             <a class="nav-link text-dark position-relative me-2" asp-area="" asp-controller="Cart" asp-action="Index">
                                 <i class="fa-solid fa-cart-shopping"></i>
                                 <span class="position-absolute top-10 start-100 translate-middle badge rounded-pill bg-danger">
-                                    3
+                                    @totalProductCount
                                     <span class="visually-hidden">Sepetteki ürünler</span>
                                 </span>
                             </a>

@@ -13,6 +13,13 @@ namespace ETicaretUygulamasi
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // Add Session service
+            builder.Services.AddSession(opts =>
+            {
+                opts.Cookie.Name = "eticaretuyg.session";
+                opts.IdleTimeout = TimeSpan.FromMinutes(20);
+            });
+
             // DatabaseContext nesnemizin merkezi tanýmlanmasý.
             builder.Services.AddDbContext<DatabaseContext>(opts =>
             {
@@ -52,7 +59,7 @@ namespace ETicaretUygulamasi
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthentication();

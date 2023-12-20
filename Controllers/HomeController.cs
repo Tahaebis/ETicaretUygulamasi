@@ -3,11 +3,12 @@ using ETicaretUygulamasi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace ETicaretUygulamasi.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
         DatabaseContext db;
@@ -34,6 +35,22 @@ namespace ETicaretUygulamasi.Controllers
             }
 
             return View(model);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult Index(int? id, int productId)
+        {
+            // Sepete ekleme
+            CartItem item = new CartItem
+            {
+                ProductId = productId,
+                Quantity = 1
+            };
+
+            AddItemToCart(item);
+
+            return RedirectToAction("Index", new { id = id });
         }
 
         public IActionResult Privacy()
