@@ -207,5 +207,70 @@ namespace ETicaretUygulamasi.Areas.Admin.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public ActionResult ShowImages(int id)
+        {
+            Product product = db.Products.Find(id);
+
+            ProductImageModel model = new ProductImageModel
+            {
+                Product = product,
+                Images = product.Images
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult AddImage(int productId, IFormFile image)
+        {
+            // Resmin klasör e kopyalanması.
+            string fileExt = image.FileName.Split(".").Last();  // abc.jpg => jpg
+            string fileName = "p_" + Guid.NewGuid() + "." + fileExt;  // p_E7D9F7D4-172D-42D5-B972-C6E57712B220.jpg
+            string path = Path.Combine("wwwroot\\img\\product_images", productId.ToString(), fileName);
+            string folderPath = Path.Combine("wwwroot\\img\\product_images", productId.ToString());
+
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
+
+            FileStream stream = new FileStream(path, FileMode.OpenOrCreate);
+            image.CopyTo(stream);
+
+            stream.Close();
+            stream.Dispose();
+
+            // Resim dosya adının db ye yazılması.
+            ProductImage productImage = new ProductImage
+            {
+                ProductId = productId,
+                FileName = fileName,
+                CreatedAt = DateTime.Now,
+                CreatedUserName = User.Identity.Name
+            };
+
+            db.ProductImages.Add(productImage);
+            db.SaveChanges();
+
+            Thread.Sleep(1500);
+
+            return RedirectToAction("ShowImages", new { id = productId });
+        }
+
+        public IActionResult DeleteImage(int productId, int id)
+        {
+            ProductImage productImage = db.ProductImages.Find(id);
+            string fileName = productImage.FileName;
+
+            if (productImage != null)
+            {
+                db.ProductImages.Remove(productImage);
+                db.SaveChanges();
+
+                string path = Path.Combine("wwwroot\\img\\product_images", productId.ToString(), fileName);
+                System.IO.File.Delete(path);
+            }
+
+            return RedirectToAction("ShowImages", new { id = productId });
+        }
     }
 }

@@ -24,5 +24,6 @@ namespace ETicaretUygulamasi.Models
         // Navigation prop : bize kodlama da kategory nesnesini çekmede yardımcı olacak.
         public virtual Category Category { get; set; }
         public virtual TagGroup TagGroup { get; set; }
+        public virtual List<ProductImage> Images { get; set; }
     }
 }

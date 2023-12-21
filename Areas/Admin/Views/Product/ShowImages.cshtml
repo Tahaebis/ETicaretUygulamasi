@@ -1,0 +1,76 @@
+﻿@using ETicaretUygulamasi.Areas.Admin.Models.ProductModels
+@using ETicaretUygulamasi.Models
+@model ProductImageModel
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>Ürün Resimleri</h1>
+        <hr />
+    </div>
+</div>
+
+<div class="row mb-3">
+    @foreach (ProductImage img in Model.Images)
+    {
+        <div class="col-3 mb-3">
+            <div class="card">
+                <img src="/img/product_images/@Model.Product.Id/@img.FileName" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <div class="row mt-3">
+                        <div class="col text-center">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" 
+                                data-bs-target="#modal_@img.Id">
+                                <i class="fa-solid fa-trash me-2"></i>Sil
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal_@img.Id" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Ürün Resmi Sil</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Ürün resmini silmek istediğiniz için emin misiniz?
+                    </div>
+                    <div class="modal-footer">
+                        <form method="post" asp-action="DeleteImage" asp-route-productId="@Model.Product.Id"
+                              asp-route-id="@img.Id">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa-solid fa-trash me-2"></i>Sil
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row mb-3">
+    <div class="col">
+        <h2>Resim Yükleme</h2>
+        <hr />
+    </div>
+</div>
+
+
+<form method="post" asp-action="AddImage" asp-route-productId="@Model.Product.Id" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-10">
+            <input type="file" class="form-control" name="image" />
+        </div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-plus me-2"></i>Yükle
+            </button>
+        </div>
+    </div>
+</form>

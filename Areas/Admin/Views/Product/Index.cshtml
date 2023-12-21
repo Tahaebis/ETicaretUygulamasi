@@ -16,9 +16,9 @@
             <th>
                 Adı
             </th>
-            <th>
+@*             <th>
                 Açıklama
-            </th>
+            </th> *@
             <th>
                 Fiyat
             </th>
@@ -59,9 +59,9 @@
                 <td>
                     @item.Name
                 </td>
-                <td>
+                @* <td>
                     @item.Description
-                </td>
+                </td> *@
                 <td>
                     @item.Price
                 </td>
@@ -98,9 +98,10 @@
                     @item.ModifiedUserName
                 </td> *@
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Kaydı silmek istediğinize emin misiniz?')">Delete</a>
+                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-primary btn-sm" asp-action="ShowImages" asp-route-id="@item.Id">Images</a>
+                    <a class="btn btn-primary btn-sm" asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Kaydı silmek istediğinize emin misiniz?')">Delete</a>
                 </td>
             </tr>
         }

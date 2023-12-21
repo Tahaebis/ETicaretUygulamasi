@@ -13,7 +13,6 @@ namespace ETicaretUygulamasi.Models
         public DbSet<TagGroup> TagGroups { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Address> Addresses { get; set; }
-
-        
+        public DbSet<ProductImage> ProductImages { get; set; }
     }
 }

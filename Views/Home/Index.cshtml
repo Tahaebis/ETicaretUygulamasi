@@ -3,7 +3,7 @@
 
 <div class="row mb-4">
     <div class="col">
-        <div id="carouselExample" class="carousel slide">
+        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img src="https://picsum.photos/1920/400?random=1" class="d-block w-100" alt="...">
@@ -43,7 +43,15 @@
             {
                 <div class=" col-3 mb-3">
                     <div class="card">
-                        <img src="https://picsum.photos/286/180?random=1" class="card-img-top" alt="...">
+                        @if (pro.Images != null && pro.Images.Count > 0)
+                        {
+                            <img src="/img/product_images/@pro.Id/@pro.Images.First().FileName" class="card-img-top" alt="...">
+                        }
+                        else
+                        {
+                            <img src="https://picsum.photos/286/180?random=1" class="card-img-top" alt="...">
+                        }
+
                         <div class="card-body">
                             <h5 class="card-title"><a asp-area="" asp-controller="Product" asp-action="Details" asp-route-id="@pro.Id">@pro.Name</a></h5>
                             <div class="row">
