@@ -1,55 +1,16 @@
-﻿@model CartIndexModel
+﻿@model PaymentIndexModel
+
+@{
+    decimal totalTax = 0;
+    decimal total = 0;
+}
 
 <div class="row mb-3">
     <div class="col">
-        <h1>Sepetim</h1>
+        <h1>Ödeme Sayfası</h1>
         <hr />
     </div>
 </div>
-
-<form id="cartForm" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
-
-    <div class="row mb-3">
-        <div class="col-4">
-            <label class="form-label"><b>Teslimat Adresi</b></label>
-            <select class="form-select" asp-for="DeliveryAddressId" asp-items="@(new SelectList(Model.Addresses, "Id","Title"))">
-                <option>Seçiniz</option>
-            </select>
-            <span asp-validation-for="DeliveryAddressId" class="text-danger small"></span>
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-4">
-            <label class="form-label"><b>Fatura Adresi</b></label>
-            <select class="form-select" asp-for="InvoiceAddressId" asp-items="@(new SelectList(Model.Addresses, "Id","Title"))">
-                <option>Seçiniz</option>
-            </select>
-            <span asp-validation-for="InvoiceAddressId" class="text-danger small"></span>
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-6">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" asp-for="Check1">
-                <label class="form-check-label" asp-for="Check1">
-                    In malesuada semper mi, id sollicitudin urna.
-                </label>
-                <span asp-validation-for="Check1" class="text-danger small"></span>
-            </div>
-
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" asp-for="Check2">
-                <label class="form-check-label" asp-for="Check2">
-                    Consectetur adipiscing elit fusce vel.
-                </label>
-                <span asp-validation-for="Check2" class="text-danger small"></span>
-            </div>
-        </div>
-    </div>
-</form>
 
 <div class="row mb-3">
     <div class="col">
@@ -62,6 +23,9 @@
                     decimal urunAraToplam = product.DiscountedPrice * item.Quantity;
                     decimal vergiTutari = urunAraToplam * product.TaxRate / 100;
                     decimal urunToplam = urunAraToplam + vergiTutari;
+
+                    totalTax += vergiTutari;
+                    total += urunToplam;
 
                     <tr>
                         <td>
@@ -135,8 +99,66 @@
     </div>
 </div>
 
-<div class="row mb-3">
-    <div class="col">
-        <button type="submit" class="btn btn-success" form="cartForm">Ödeme Sayfasına Git</button>
+<form method="post">
+    <div class="row mb-3">
+        <div class="col-6">
+            <div class="row mb-3">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <input type="text" asp-for="CardHolder" class="form-control" placeholder="Kart sahibi">
+                        <span asp-validation-for="CardHolder" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" asp-for="CardNo" class="form-control" placeholder="Kart numarası">
+                        <span asp-validation-for="CardNo" class="text-danger small"></span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <label class="form-label small" asp-for="CardMonth">Ay</label>
+                    <input type="number" class="form-control" asp-for="CardMonth" placeholder="@DateTime.Now.Month">
+                    <span asp-validation-for="CardMonth" class="text-danger small"></span>
+                </div>
+                <div class="col-3">
+                    <label class="form-label small" asp-for="CardYear">Yıl</label>
+                    <input type="number" class="form-control" asp-for="CardYear" placeholder="@DateTime.Now.Year">
+                    <span asp-validation-for="CardYear" class="text-danger small"></span>
+                </div>
+                <div class="col-3">&nbsp;</div>
+                <div class="col-3">
+                    <label class="form-label small" asp-for="CardCvc">CVC</label>
+                    <input type="number" class="form-control" placeholder="123" asp-for="CardCvc">
+                    <span asp-validation-for="CardCvc" class="text-danger small"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-success">Ödeme Yap</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div>
+                <b>Toplam KDV</b> : @totalTax.ToString("C2")
+            </div>
+            <div class="mb-3">
+                <h4><b>Toplam tutar</b> : @total.ToString("C2")</h4>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" asp-for="Check1">
+                <label class="form-check-label" asp-for="Check1">
+                    In malesuada semper mi, id sollicitudin urna.
+                </label>
+                <span asp-validation-for="Check1" class="text-danger small"></span>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" asp-for="Check2">
+                <label class="form-check-label" asp-for="Check2">
+                    Consectetur adipiscing elit fusce vel.
+                </label>
+                <span asp-validation-for="Check2" class="text-danger small"></span>
+            </div>
+        </div>
     </div>
-</div>
+</form>

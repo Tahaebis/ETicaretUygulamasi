@@ -38,6 +38,11 @@ namespace ETicaretUygulamasi.Controllers
                 cartItem.Quantity += item.Quantity;
             }
 
+            SaveCartList(items);
+        }
+
+        public void SaveCartList(List<CartItem> items)
+        {
             string cart = JsonSerializer.Serialize(items);
             HttpContext.Session.SetString("sepet", cart);
         }
