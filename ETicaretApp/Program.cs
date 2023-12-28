@@ -1,3 +1,4 @@
+using ETicaretUygulamasi.Business;
 using ETicaretUygulamasi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,10 @@ namespace ETicaretUygulamasi
                 opts.UseSqlServer(connStr);
                 opts.UseLazyLoadingProxies();
             });
+
+            // Dependency Injection
+            builder.Services.AddScoped<IAddressManager, AddressManager>();
+            //builder.Services.AddScoped<IAddressManager, AddressManager2>();
 
             // Authentication - kimlik kontrolü hizmetini aktif ettik.
             builder.Services

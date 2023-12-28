@@ -1,43 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using ETicaretUygulamasi.Business;
 using ETicaretUygulamasi.Models;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ETicaretUygulamasi.Controllers
 {
     public class AddressController : BaseController
     {
-        private readonly DatabaseContext _db;
+        IAddressManager _addressManager;
 
-        public AddressController(DatabaseContext db)
+        public AddressController(IAddressManager addressManager)
         {
-            _db = db;
+            _addressManager = addressManager;
         }
 
         // GET: Address
         public async Task<IActionResult> Index()
         {
             int userId = GetUserId();
-            var addresses = _db.Addresses.Where(x => x.UserId == userId).ToList();
+            List<Address> addresses = _addressManager.List(userId);
+
             return View(addresses);
         }
 
         // GET: Address/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _db.Addresses == null)
+            if (id == null || _addressManager.IsNullAddresses())
             {
                 return NotFound();
             }
 
-            var address = await _db.Addresses
-                .Include(a => a.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Address address = _addressManager.Find(id.Value);
+
             if (address == null)
             {
                 return NotFound();
@@ -70,8 +65,7 @@ namespace ETicaretUygulamasi.Controllers
 
             if (ModelState.IsValid)
             {
-                _db.Add(model);
-                _db.SaveChanges();
+                _addressManager.Add(model);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -81,12 +75,12 @@ namespace ETicaretUygulamasi.Controllers
         // GET: Address/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _db.Addresses == null)
+            if (id == null || _addressManager.IsNullAddresses())
             {
                 return NotFound();
             }
 
-            var address = await _db.Addresses.FindAsync(id);
+            var address = _addressManager.Find(id.Value);
             if (address == null)
             {
                 return NotFound();
@@ -122,16 +116,15 @@ namespace ETicaretUygulamasi.Controllers
             {
                 try
                 {
-                    Address address = _db.Addresses.AsNoTracking().FirstOrDefault(x => x.Id == id);
+                    Address address = _addressManager.Find(id, true);
                     model.CreatedAt = address.CreatedAt;
                     model.CreatedUserName = address.CreatedUserName;
 
-                    _db.Update(model);
-                    _db.SaveChanges();
+                    _addressManager.Update(model);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AddressExists(model.Id))
+                    if (!_addressManager.AddressExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -142,21 +135,20 @@ namespace ETicaretUygulamasi.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return View(model);
         }
 
         // GET: Address/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _db.Addresses == null)
+            if (id == null || _addressManager.IsNullAddresses())
             {
                 return NotFound();
             }
 
-            var address = await _db.Addresses
-                .Include(a => a.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Address address = _addressManager.Find(id.Value);
+
             if (address == null)
             {
                 return NotFound();
@@ -170,23 +162,18 @@ namespace ETicaretUygulamasi.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_db.Addresses == null)
+            if (_addressManager.IsNullAddresses())
             {
                 return Problem("Entity set 'DatabaseContext.Addresses'  is null.");
             }
-            var address = await _db.Addresses.FindAsync(id);
+            Address address = _addressManager.Find(id);
+
             if (address != null)
             {
-                _db.Addresses.Remove(address);
+                _addressManager.Remove(address);                
             }
 
-            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool AddressExists(int id)
-        {
-            return (_db.Addresses?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

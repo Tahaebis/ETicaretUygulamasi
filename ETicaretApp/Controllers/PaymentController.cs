@@ -75,7 +75,7 @@ namespace ETicaretUygulamasi.Controllers
 
                     try
                     {
-                        response = client.Post(request);
+                        response = client.Execute(request);
 
                         //if (response.StatusCode == System.Net.HttpStatusCode.OK)
                         if (response.IsSuccessStatusCode)
@@ -119,14 +119,14 @@ namespace ETicaretUygulamasi.Controllers
                             return RedirectToAction("PaymentSuccess");
                         }
 
+                        ModelState.AddModelError("", response.Content);
                     }
                     catch (Exception ex)
                     {
-                        ModelState.AddModelError("", "Ödeme alınamadı.");
+                        ModelState.AddModelError("", response.Content);
                     }
                 }
             }
-
 
             LoadPaymentIndexModel(model);
             return View(model);
@@ -141,6 +141,11 @@ namespace ETicaretUygulamasi.Controllers
             List<int> productIds = model.CartItems.Select(x => x.ProductId).ToList();
 
             model.Products = _db.Products.Where(p => productIds.Contains(p.Id)).ToList();
+        }
+
+        public IActionResult PaymentSuccess()
+        {
+            return View();
         }
     }
 }
